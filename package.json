@@ -1,0 +1,10 @@
+{
+  "name": "kevinnicolas.com",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "construire": "node outils/construire.mjs",
+    "images": "node outils/telecharger-images.mjs && node outils/construire.mjs",
+    "apercu": "npx --yes serve@14.2.4 ."
+  }
+}
