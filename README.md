@@ -38,8 +38,22 @@ npm run images
 Le script télécharge chaque image dans `images/`, puis regénère les pages pour qu’elles
 utilisent les copies locales. Il suffit ensuite de commiter le dossier `images/`.
 
-## Mise en ligne
+## Mise en ligne (GitHub Pages)
 
-N’importe quel hébergeur statique convient (GitHub Pages, Netlify, Cloudflare Pages…) :
-il suffit de publier la racine du dépôt. Pour GitHub Pages avec le domaine personnalisé,
-ajouter un fichier `CNAME` contenant `kevinnicolas.com`.
+Le workflow `.github/workflows/pages.yml` regénère et publie le site à chaque poussée sur `main`
+(seules les pages publiques sont mises en ligne, pas `src/`, `outils/` ni `en/`).
+
+Réglage à faire une seule fois : **Settings → Pages → Build and deployment → Source : GitHub Actions**.
+
+Adresse : <https://khnrv.github.io/kevinnicolas.com/>
+
+### Passer au domaine kevinnicolas.com
+
+1. Ajouter à la racine un fichier `CNAME` contenant `kevinnicolas.com`.
+2. Chez le registraire, faire pointer le domaine vers GitHub Pages
+   (enregistrements A vers 185.199.108.153, .109.153, .110.153 et .111.153,
+   et `www` en CNAME vers `khnrv.github.io`).
+3. Dans Settings → Pages, saisir le domaine et cocher « Enforce HTTPS ».
+
+Ne pas ajouter le `CNAME` avant d’avoir changé le DNS : l’adresse github.io redirigerait
+alors vers l’ancien site Adobe.

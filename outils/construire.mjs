@@ -48,11 +48,11 @@ const reseaux = () =>
     )
     .join('')}</ul>`;
 
-const gabarit = ({ titre, description, prefixe, actif, contenu, imageOg, chemin }) => `<!doctype html>
+const gabarit = ({ titre, description, prefixe, actif, contenu, imageOg, chemin, tete = '' }) => `<!doctype html>
 <html lang="fr-CA">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+${tete}<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${echapper(titre ? `${titre} — ${site.nom}` : site.nom)}</title>
 <meta name="description" content="${echapper(description)}">
 <link rel="canonical" href="${site.url}/${chemin}">
@@ -253,16 +253,19 @@ for (const r of redirections) {
   );
 }
 
-// 404 (servie depuis n'importe quelle profondeur : chemins absolus)
+// 404 : servie à n'importe quelle profondeur, donc les liens partent d'une balise <base>.
+// Sur khnrv.github.io/kevinnicolas.com/, la base inclut le nom du dépôt ; sur le domaine, c'est « / ».
+const baseDynamique = `<script>document.write('<base href="' + (location.hostname.endsWith('github.io') ? '/' + location.pathname.split('/')[1] + '/' : '/') + '">');</script>\n`;
 ecrire(
   '404.html',
   gabarit({
     titre: 'Page introuvable',
     description: 'Cette page n’existe pas.',
-    prefixe: '/',
+    prefixe: '',
     actif: null,
     chemin: '404.html',
-    contenu: `<section class="introuvable"><h1>Page introuvable</h1><p>La page demandée n’existe pas ou a été déplacée.</p><p><a href="/">Retour au portfolio</a></p></section>`,
+    tete: baseDynamique,
+    contenu: `<section class="introuvable"><h1>Page introuvable</h1><p>La page demandée n’existe pas ou a été déplacée.</p><p><a href="./">Retour au portfolio</a></p></section>`,
   }),
 );
 
