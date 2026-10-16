@@ -35,13 +35,16 @@ jobs:
           mkdir _site
           touch _site/.nojekyll
           cp index.html 404.html robots.txt sitemap.xml _site/
-          [ -f CNAME ] && cp CNAME _site/
           cp -r assets _site/
-          [ -d images ] && cp -r images _site/
+          if [ -f CNAME ]; then cp CNAME _site/; fi
+          if [ -d images ]; then cp -r images _site/; fi
+          # Chaque dossier contenant une page générée (projets, à propos, redirections).
           for dossier in */; do
-            [ -f "${dossier}index.html" ] && cp -r "$dossier" _site/
+            if [ "$dossier" != "_site/" ] && [ -f "${dossier}index.html" ]; then
+              cp -r "$dossier" _site/
+            fi
           done
-          ls -R _site | head -50
+          ls _site
 
       - uses: actions/configure-pages@v5
 
